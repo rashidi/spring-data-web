@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import rz.demo.spring.data.web.book.Book;
 
-import java.util.Objects;
+import java.util.Optional;
 
 /**
  * @author Rashidi Zin
@@ -16,7 +16,9 @@ public class BookResource {
 
     @GetMapping("/book/{id}")
     public ResponseEntity<Book> get(@PathVariable("id") Book book) {
-        return Objects.nonNull(book) ? ResponseEntity.ok(book) : ResponseEntity.notFound().build();
+        return Optional.ofNullable(book)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
 }
